@@ -1,0 +1,54 @@
+# Сборка и публикация сайта на GitHub Pages при каждом изменении в ветке main
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fetch fonts (Onest, SIL OFL)
+        run: |
+          npm pack @fontsource/onest@5.3.1 --silent
+          tar xzf fontsource-onest-5.3.1.tgz
+          mkdir -p src/fonts
+          for w in 400 500 600 700; do for s in cyrillic latin; do cp package/files/onest-$s-$w-normal.woff2 src/fonts/; done; done
+          cp package/LICENSE src/fonts/OFL.txt
+      - name: Render preview image (og-image.jpg)
+        continue-on-error: true
+        run: |
+          npm install --no-save --silent playwright@1.47.2
+          npx playwright install --with-deps chromium
+          node scripts/og.mjs
+      - name: Build
+        run: node build.mjs
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
