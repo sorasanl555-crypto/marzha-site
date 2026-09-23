@@ -1,0 +1,21 @@
+{
+  "domain": "sorasanl555-crypto.github.io/marzha-site",
+  "siteName": "Маржа",
+  "title": "Маржа — операционный интеллект для грузоперевозчиков",
+  "description": "Программный слой поверх TMS, 1С и телематики: считаем альтернативы рейсов, рекомендуем лучший ход и подтверждаем эффект в рублях. Для парков 10–150 машин.",
+  "web3formsKey": "",
+  "leadSubject": "Новая заявка с сайта Маржа",
+  "leadEmailForFallback": "",
+  "yandexMetrikaId": "",
+  "yandexVerification": "",
+  "googleVerification": "",
+  "legal": {
+    "company": "",
+    "inn": "",
+    "ogrn": "",
+    "address": "",
+    "email": "",
+    "policyDate": "23.09.2026"
+  },
+  "noindex": true
+}
